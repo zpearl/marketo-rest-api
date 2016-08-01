@@ -684,6 +684,200 @@ class Client extends GuzzleClient
         return $this->getResult('approveEmailbyId', $args, false, $returnRaw);
     }
 
+        /**
+     * Get Activity Types
+     *
+     * @link http://developers.marketo.com/documentation/rest/get-activity-types/
+     *
+     * @return GetActivityTypesResponse
+     */
+    public function getActivityTypes($args = [])
+    {
+        return $this->getResult('getActivityTypes', $args);
+    }
+
+    /**
+     * Get Lead Fields
+     *
+     * @link http://developers.marketo.com/documentation/rest/describe/
+     *
+     * @return DescribeLeadResponse
+     */
+    public function describeLead($args = [])
+    {
+        return $this->getResult('describeLead', $args);
+    }
+
+    /**
+     * Get Lead Activity.
+     *
+     * @link http://developers.marketo.com/documentation/rest/get-lead-activities/
+     *
+     * @return GetLeadActivitiesResponse
+     */
+    public function getLeadActivities($activityTypesIds, $nextPageToken, $args = [])
+    {
+        $activityTypeIds = array();
+        foreach ($activityTypesIds as $id) {
+            $activityTypeIds[] = "activityTypeIds[]={$id}";
+        }
+
+        $args['activityTypeIds'] = implode(',', $activityTypesIds);
+        $args['nextPageToken']   = $nextPageToken;
+
+        return $this->getResult('getLeadActivities', $args);
+    }
+
+    /**
+     * Get Snippets
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-snippets/
+     *
+     * @return GetSnippetsResponse
+     */
+    public function getSnippets($args = array())
+    {
+        return $this->getResult('getSnippets', $args);
+    }
+
+    /**
+     * Get Snippet By Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-snippet-by-id/
+     *
+     * @return GetSnippetByIdResponse
+     */
+    public function getSnippetById($id, $args = [])
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getSnippetById', $args);
+    }
+
+    /**
+     * Get Snippet Content By Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-snippet-content-by-id/
+     *
+     * @return GetSnippetContentByIdResponse
+     */
+    public function getSnippetContentById($id, $args = [])
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getSnippetContentById', $args);
+    }
+
+    /**
+     * Get Snippet Content By Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-email-content-by-id/
+     *
+     * @return GetEmailContentByIdResponse
+     */
+    public function getEmailContentById($id, $args = [])
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getEmailContentById', $args);
+    }
+
+    /**
+     * Get Snippet Dynamic Content By Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-snippet-dynamic-content-by-id/
+     *
+     * @return GetSnippetDynamicContentByIdResponse
+     */
+    public function getSnippetDynamicContentById($id, $args = [])
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getSnippetDynamicContentById', $args);
+    }
+
+    /**
+     * Get Segmentations
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-segmentation-by-id/
+     *
+     * @return GetSegmentationsResponse
+     */
+    public function getSegmentations($args = [])
+    {
+        return $this->getResult('getSegmentations', $args);
+    }
+
+    /**
+     * Create Token by Folder Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/create-token-by-folder-id/
+     *
+     * @return CreateTokenByFolderIdResponse
+     */
+    public function createTokenByFolderId($id, $args = [])
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('createTokenByFolderId', $args);
+    }
+
+    /**
+     * Get Program by Name
+     *
+     * @link http://developers.marketo.com/documentation/programs/get-program-by-name/
+     *
+     * @return GetProgramByNameResponse
+     */
+    public function getProgramByName($name, $args = [])
+    {
+        $args['name'] = $name;
+
+        return $this->getResult('getProgramByName', $args);
+    }
+
+    /**
+     * Get Folder Contents
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-folder-contents/
+     *
+     * @return GetProgramByNameResponse
+     */
+    public function getFolderContents($id, $args = [])
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getFolderContents', $args);
+    }
+
+    /**
+     * Get Program by Name
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/update-snippet-content-by-id/
+     *
+     * @return GetProgramByNameResponse
+     */
+    public function updateSnippetContentById($id, $args = [])
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('updateSnippetContentById', $args);
+    }
+
+    /**
+     * Get Program by Name
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/approve-snippet-by-id/
+     *
+     * @return GetProgramByNameResponse
+     */
+    public function approveSnippetById($id, $args = [])
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('approveSnippetById', $args);
+    }
+
     /**
      * Internal helper method to actually perform command.
      *

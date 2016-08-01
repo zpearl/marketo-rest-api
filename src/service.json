@@ -126,6 +126,31 @@
             },
             "responseClass": "CSD\\Marketo\\Response\\GetCampaignResponse"
         },
+        "getActivityTypes": {
+            "httpMethod": "GET",
+            "uri": "activities/types.json",
+            "parameters": {},
+            "responseClass": "CSD\\Marketo\\Response\\GetActivityTypesResponse"
+        },
+        "getLeadActivities": {
+            "httpMethod": "GET",
+            "uri": "activities.json",
+            "parameters": {
+                "activityTypeIds": {"location": "query"},
+                "nextPageToken": {"location": "query"},
+                "batchSize": {"location": "query"},
+                "listId": {"location": "query"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetLeadActivitiesResponse"
+        },
+        "getPagingToken": {
+            "httpMethod": "GET",
+            "uri": "activities/pagingtoken.json",
+            "parameters": {
+                "sinceDatetime": {"location": "query"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetPagingTokenResponse"
+        },
         "requestCampaign": {
             "httpMethod": "POST",
             "uri": "campaigns/{id}/trigger.json",
@@ -235,8 +260,8 @@
             "parameters": {
                 "id": {"location": "uri"},
                 "htmlId": {"location": "uri"},
-                "type": {"location": "query"},
-                "value": {"location": "query"}
+                "type": {"location": "postField"},
+                "value": {"location": "postField"}
                 },
             "responseClass": "CSD\\Marketo\\Response\\UpdateEmailContentInEditableSectionResponse"
         },
@@ -247,6 +272,105 @@
                 "id": {"location": "uri"}
                 },
             "responseClass": "CSD\\Marketo\\Response\\ApproveEmailResponse"
+        },
+        "describeLead": {
+            "httpMethod": "GET",
+            "uri": "leads/describe.json",
+            "responseClass": "CSD\\Marketo\\Response\\DescribeLeadResponse"
+        },
+        "getSnippets": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/snippets.json",
+            "parameters": {
+                "offset": {"location": "query"},
+                "maxReturn": {"location": "query"},
+                "status": {"location": "query"}                
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetSnippetsResponse"
+        },
+        "getSnippetContentById": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/snippet/{id}/content.json",
+            "parameters": {
+                "id": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetSnippetContentByIdResponse"
+        },
+        "getSnippetDynamicContentById": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/snippet/{id}/dynamicContent.json",
+            "parameters": {
+                "id": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetSnippetDynamicContentByIdResponse"
+        },
+        "getSnippetById": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/snippet/{id}.json",
+            "parameters": {
+                "id": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetSnippetByIdResponse"
+        },
+        "updateSnippetContentById": {
+            "httpMethod": "POST",
+            "uri": "/rest/asset/v1/snippet/{id}/content.json",
+            "parameters": {
+                "id": {"location": "uri"},
+                "type": {"location": "postField"},
+                "content": {"location": "postField"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\UpdateSnippetContentByIdResponse"
+        },
+        "approveSnippetById": {
+            "httpMethod": "POST",
+            "uri": "/rest/asset/v1/snippet/{id}/approveDraft.json",
+            "parameters": {
+                "id": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\ApproveSnippetByIdResponse"
+        },
+        "getEmailContentById": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/email/{id}/content.json",
+            "parameters": {
+                "id": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetEmailContentByIdResponse"
+        },
+        "createTokenByFolderId": {
+            "httpMethod": "POST",
+            "uri": "/rest/asset/v1/folder/{id}/tokens.json",
+            "parameters": {
+                "id": {"location": "uri"},
+                "folderType": {"location": "postField"},
+                "type": {"location": "postField"},
+                "name": {"location": "postField"},
+                "value": {"location": "postField"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\CreateTokenByFolderIdResponse"
+        },
+        "getProgramByName": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/program/byName.json",
+            "parameters": {
+                "name": {"location": "query"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetProgramByNameResponse"
+        },
+        "getFolderContents": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/folder/{id}/content.json",
+            "parameters": {
+                "id": {"location": "uri"},
+                "type": {"location": "query"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetFolderContentsResponse"
+        },
+        "getSegmentations": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/segmentation.json",
+            "responseClass": "CSD\\Marketo\\Response\\GetSegmentationsResponse"
         }
     }
 }
