@@ -265,6 +265,18 @@
                 },
             "responseClass": "CSD\\Marketo\\Response\\UpdateEmailContentInEditableSectionResponse"
         },
+        "updateEmailDynamicContentById": {
+            "httpMethod": "POST",
+            "uri": "/rest/asset/v1/email/{id}/dynamicContent/{dynamicContentId}.json",
+            "parameters": {
+                "id": {"location": "uri"},
+                "dynamicContentId": {"location": "uri"},
+                "segment": {"location": "postField"},
+                "value": {"location": "postField"},
+                "type": {"location": "postField"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\UpdateEmailDynamicContentByIdResponse"
+        },
         "approveEmailbyId": {
             "httpMethod": "POST",
             "uri": "/rest/asset/v1/email/{id}/approveDraft.json",
@@ -371,6 +383,32 @@
             "httpMethod": "GET",
             "uri": "/rest/asset/v1/segmentation.json",
             "responseClass": "CSD\\Marketo\\Response\\GetSegmentationsResponse"
+        },
+        "getCustomObjects": {
+            "httpMethod": "GET",
+            "uri": "/rest/v1/customobjects/{name}.json",
+            "parameters": {
+                "name": {"location": "uri"},
+                "filterType": {"location": "query"},
+                "filterValues": {"location": "query"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetCustomObjectsResponse"
+        },
+        "describeCustomObject": {
+            "httpMethod": "GET",
+            "uri": "/rest/v1/customobjects/{name}/describe.json",
+            "parameters": {
+                "name": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\DescribeCustomObjectResponse"
+        },
+        "addCustomActivity": {
+            "httpMethod": "POST",
+            "uri": "/rest/v1/activities/external.json",
+            "parameters": {
+                "customActivityRequest": {"location": "body"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\AddCustomActivityResponse"
         }
     }
 }
