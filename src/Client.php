@@ -693,7 +693,7 @@ class Client extends GuzzleClient
          *
          * @return GetActivityTypesResponse
          */
-        public function getActivityTypes($args = [])
+        public function getActivityTypes($args = array())
         {
             return $this->getResult('getActivityTypes', $args);
         }
@@ -705,7 +705,7 @@ class Client extends GuzzleClient
          *
          * @return DescribeLeadResponse
          */
-        public function describeLead($args = [])
+        public function describeLead($args = array())
         {
             return $this->getResult('describeLead', $args);
         }
@@ -717,11 +717,11 @@ class Client extends GuzzleClient
          *
          * @return GetLeadActivitiesResponse
          */
-        public function getLeadActivities($activityTypesIds, $nextPageToken, $args = [])
+        public function getLeadActivities($activityTypesIds, $nextPageToken, $args = array())
         {
             $activityTypeIds = array();
             foreach ($activityTypesIds as $id) {
-                $activityTypeIds[] = "activityTypeIds[]={$id}";
+                $activityTypeIdsarray[] = "activityTypeIdsarray[]={$id}";
             }
 
             $args['activityTypeIds'] = implode(',', $activityTypesIds);
@@ -749,7 +749,7 @@ class Client extends GuzzleClient
          *
          * @return GetSnippetByIdResponse
          */
-        public function getSnippetById($id, $args = [])
+        public function getSnippetById($id, $args = array())
         {
             $args['id'] = $id;
 
@@ -763,7 +763,7 @@ class Client extends GuzzleClient
          *
          * @return GetSnippetContentByIdResponse
          */
-        public function getSnippetContentById($id, $args = [])
+        public function getSnippetContentById($id, $args = array())
         {
             $args['id'] = $id;
 
@@ -777,7 +777,7 @@ class Client extends GuzzleClient
          *
          * @return GetEmailContentByIdResponse
          */
-        public function getEmailContentById($id, $args = [])
+        public function getEmailContentById($id, $args = array())
         {
             $args['id'] = $id;
 
@@ -794,7 +794,7 @@ class Client extends GuzzleClient
          *
          * @return UpdateEmailDynamicContentByIdResponse
          */
-        public function updateEmailDynamicContentById($id, $dynamicContentId, $args = [])
+        public function updateEmailDynamicContentById($id, $dynamicContentId, $args = array())
         {
             $args['id']               = $id;
             $args['dynamicContentId'] = $dynamicContentId;
@@ -809,7 +809,7 @@ class Client extends GuzzleClient
          *
          * @return GetSnippetDynamicContentByIdResponse
          */
-        public function getSnippetDynamicContentById($id, $args = [])
+        public function getSnippetDynamicContentById($id, $args = array())
         {
             $args['id'] = $id;
 
@@ -823,7 +823,7 @@ class Client extends GuzzleClient
          *
          * @return GetSegmentationsResponse
          */
-        public function getSegmentations($args = [])
+        public function getSegmentations($args = array())
         {
             return $this->getResult('getSegmentations', $args);
         }
@@ -835,7 +835,7 @@ class Client extends GuzzleClient
          *
          * @return CreateTokenByFolderIdResponse
          */
-        public function createTokenByFolderId($id, $args = [])
+        public function createTokenByFolderId($id, $args = array())
         {
             $args['id'] = $id;
 
@@ -849,7 +849,7 @@ class Client extends GuzzleClient
          *
          * @return GetProgramByNameResponse
          */
-        public function getProgramByName($name, $args = [])
+        public function getProgramByName($name, $args = array())
         {
             $args['name'] = $name;
 
@@ -863,7 +863,7 @@ class Client extends GuzzleClient
          *
          * @return GetProgramByNameResponse
          */
-        public function getFolderContents($id, $args = [])
+        public function getFolderContents($id, $args = array())
         {
             $args['id'] = $id;
 
@@ -877,7 +877,7 @@ class Client extends GuzzleClient
          *
          * @return GetProgramByNameResponse
          */
-        public function updateSnippetContentById($id, $args = [])
+        public function updateSnippetContentById($id, $args = array())
         {
             $args['id'] = $id;
 
@@ -891,7 +891,7 @@ class Client extends GuzzleClient
          *
          * @return GetProgramByNameResponse
          */
-        public function approveSnippetById($id, $args = [])
+        public function approveSnippetById($id, $args = array())
         {
             $args['id'] = $id;
 
@@ -908,7 +908,7 @@ class Client extends GuzzleClient
          */
         public function describeCustomObject($name)
         {
-            return $this->getResult('describeCustomObject', ['name' => $name]);
+            return $this->getResult('describeCustomObject', array('name' => $name));
         }
 
         /**
@@ -918,7 +918,7 @@ class Client extends GuzzleClient
          *
          * @return GetCustomObjectsResponse
          */
-        public function getCustomObjects($name, $filterType, $filterValues, $args = [])
+        public function getCustomObjects($name, $filterType, $filterValues, $args = array())
         {
             $args['name']         = $name;
             $args['filterType']   = $filterType;
@@ -934,9 +934,9 @@ class Client extends GuzzleClient
          *
          * @return SetCustomActivityResponse
          */
-        public function addCustomActivity($activities, $args = [])
+        public function addCustomActivity($activities, $args = array())
         {
-            $args['customActivityRequest']         = json_encode(['input' => $activities]);
+            $args['customActivityRequest']         = json_encode(array('input' => $activities));
 
             return $this->getResult('addCustomActivity', $args);
         }
