@@ -394,6 +394,16 @@
             },
             "responseClass": "CSD\\Marketo\\Response\\GetCustomObjectsResponse"
         },
+        "createOrUpdateCustomObjects": {
+            "httpMethod": "POST",
+            "uri": "/rest/v1/customobjects/{name}.json",
+            "parameters": {
+                "name": {"location": "uri"},
+                "action": {"location": "json"},
+                "input": {"location": "json"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\CreateOrUpdateCustomObjectsResponse"
+        },
         "describeCustomObject": {
             "httpMethod": "GET",
             "uri": "/rest/v1/customobjects/{name}/describe.json",
@@ -401,6 +411,14 @@
                 "name": {"location": "uri"}
             },
             "responseClass": "CSD\\Marketo\\Response\\DescribeCustomObjectResponse"
+        },
+        "describeCustomActivity": {
+            "httpMethod": "GET",
+            "uri": "GET /rest/v1/activities/external/type/{apiName}/describe.json",
+            "parameters": {
+                "apiName": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\DescribeCustomActivityResponse"
         },
         "addCustomActivity": {
             "httpMethod": "POST",

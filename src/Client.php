@@ -928,6 +928,36 @@ class Client extends GuzzleClient
         }
 
         /**
+         * Get Custom Objects
+         *
+         * @link http://developers.marketo.com/documentation/custom-api/get-custom-objects/
+         *
+         * @return GetCustomObjectsResponse
+         */
+        public function createOrUpdateCustomObjects($name, $object, $args = [])
+        {
+            $args['name']         = $name;
+            $args['action'] = 'createOnly';
+            $args['input'] = [$object];
+
+            return $this->getResult('createOrUpdateCustomObjects', $args);
+        }
+
+        /**
+         * Describe Custom Activity Type
+         *
+         * @link http://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Activities/describeCustomActivityTypeUsingGET
+         *
+         * @return SetCustomActivityResponse
+         */
+        public function describeCustomActivity($activities, $args = [])
+        {
+            $args['customActivityRequest']         = json_encode(['input' => $activities]);
+
+            return $this->getResult('describeCustomActivity', $args);
+        }
+        
+        /**
          * Add Custom Activity
          *
          * @link http://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Activities/addCustomActivityUsingPOST
@@ -950,7 +980,7 @@ class Client extends GuzzleClient
          *
          * @return Response
          */
-        private function getResult($command, $args, $fixArgs = false, $returnRaw = false)
+        protected function getResult($command, $args, $fixArgs = false, $returnRaw = false)
         {
             $cmd = $this->getCommand($command, $args);
 
