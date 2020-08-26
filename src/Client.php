@@ -307,8 +307,7 @@ class Client extends GuzzleClient
      *
      * @return GetLeadsResponse
      */
-    public function getLeadsByFilterType($filterType, $filterValues, $fields = array(), $nextPageToken = null,
-                                         $returnRaw = false)
+    public function getLeadsByFilterType($filterType, $filterValues, $fields = array(), $nextPageToken = null, $returnRaw = false)
     {
         $args['filterType']   = $filterType;
         $args['filterValues'] = $filterValues;
@@ -531,479 +530,582 @@ class Client extends GuzzleClient
                     return array('id' => $id);
                 }, (array) $leads));
 
-            if (!empty($tokens)) {
-                $args['input']['tokens'] = $tokens;
-            }
-
-            return $this->getResult('requestCampaign', $args, false, $returnRaw);
+        if (!empty($tokens)) {
+            $args['input']['tokens'] = $tokens;
         }
 
-        /**
-         * Schedule a campaign
-         *
-         * @param int         $id      Campaign ID
-         * @param DateTime    $runAt   The time to run the campaign. If not provided, campaign will be run in 5 minutes.
-         * @param array       $tokens  Key value array of tokens to send new values for.
-         * @param array       $args
-         *
-         * @link http://developers.marketo.com/documentation/rest/schedule-campaign/
-         *
-         * @return ScheduleCampaignResponse
-         */
-        public function scheduleCampaign($id, \DateTime $runAt = NULL, $tokens = array(), $args = array(),
-                                         $returnRaw = false)
-        {
-            $args['id'] = $id;
+        return $this->getResult('requestCampaign', $args, false, $returnRaw);
+    }
 
-            if (!empty($runAt)) {
-                $args['input']['runAt'] = $runAt->format('c');
-            }
+    /**
+     * Schedule a campaign
+     *
+     * @param int         $id      Campaign ID
+     * @param DateTime    $runAt   The time to run the campaign. If not provided, campaign will be run in 5 minutes.
+     * @param array       $tokens  Key value array of tokens to send new values for.
+     * @param array       $args
+     *
+     * @link http://developers.marketo.com/documentation/rest/schedule-campaign/
+     *
+     * @return ScheduleCampaignResponse
+     */
+    public function scheduleCampaign($id, \DateTime $runAt = NULL, $tokens = array(), $args = array(), $returnRaw = false)
+    {
+        $args['id'] = $id;
 
-            if (!empty($tokens)) {
-                $args['input']['tokens'] = $tokens;
-            }
-
-            return $this->getResult('scheduleCampaign', $args, false, $returnRaw);
+        if (!empty($runAt)) {
+            $args['input']['runAt'] = $runAt->format('c');
         }
 
-        /**
-         * Associate a lead
-         *
-         * @param int       $id
-         * @param string    $cookie
-         * @param array     $args
-         *
-         * @link http://developers.marketo.com/documentation/rest/associate-lead/
-         *
-         * @return AssociateLeadResponse
-         */
-        public function associateLead($id, $cookie = null, $args = array(), $returnRaw = false)
-        {
-            $args['id'] = $id;
-
-            if (!empty($cookie)) {
-                $args['cookie'] = $cookie;
-            }
-
-            return $this->getResult('associateLead', $args, false, $returnRaw);
+        if (!empty($tokens)) {
+            $args['input']['tokens'] = $tokens;
         }
 
-        /**
-         * Get the paging token required for lead activity and changes
-         *
-         * @param string $sinceDatetime String containing a datetime
-         * @param array  $args
-         * @param bool   $returnRaw
-         *
-         * @return GetPagingToken
-         * @link http://developers.marketo.com/documentation/rest/get-paging-token/
-         *
-         */
-        public function getPagingToken($sinceDatetime, $args = array(), $returnRaw = false)
-        {
-            $args['sinceDatetime'] = $sinceDatetime;
+        return $this->getResult('scheduleCampaign', $args, false, $returnRaw);
+    }
 
-            return $this->getResult('getPagingToken', $args, false, $returnRaw);
+    /**
+     * Associate a lead
+     *
+     * @param int       $id
+     * @param string    $cookie
+     * @param array     $args
+     *
+     * @link http://developers.marketo.com/documentation/rest/associate-lead/
+     *
+     * @return AssociateLeadResponse
+     */
+    public function associateLead($id, $cookie = null, $args = array(), $returnRaw = false)
+    {
+        $args['id'] = $id;
+
+        if (!empty($cookie)) {
+            $args['cookie'] = $cookie;
         }
 
-        /**
-         * Get lead changes
-         *
-         * @param string       $nextPageToken Next page token
-         * @param string|array $fields
-         * @param array        $args
-         * @param bool         $returnRaw
-         *
-         * @return GetLeadChanges
-         * @link http://developers.marketo.com/documentation/rest/get-lead-changes/
-         * @see  getPagingToken
-         *
-         */
-        public function getLeadChanges($nextPageToken, $fields, $args = array(), $returnRaw = false)
-        {
-            $args['nextPageToken'] = $nextPageToken;
-            $args['fields']        = (array) $fields;
+        return $this->getResult('associateLead', $args, false, $returnRaw);
+    }
 
-            if (count($fields)) {
-                $args['fields'] = implode(',', $fields);
-            }
+    /**
+     * Merge Leads
+     *
+     * @param int       $leadId Winner Lead ID
+     * @param int|array $leadIds     Loser Lead ID or an array of Lead IDs comma-separated
+     * @param bool     $mergeInCrm
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#/Leads/mergeLeadsUsingPOST
+     *
+     * @return MergeLeadsResponse
+     */
+    public function mergeLeads($leadId, $leadIds, $mergeInCrm = false)
+    {
+        $args['leadId']     = $leadId;
+        $args['leadIds']    = implode(',', $leadIds);
+        $args['mergeInCrm'] = $mergeInCrm;
 
-            return $this->getResult('getLeadChanges', $args, true, $returnRaw);
+        return $this->getResult('mergeLeads', $args, true, false);
+    }
+
+    /**
+     * Get the paging token required for lead activity and changes
+     *
+     * @param string $sinceDatetime String containing a datetime
+     * @param array  $args
+     * @param bool   $returnRaw
+     *
+     * @return GetPagingToken
+     * @link http://developers.marketo.com/documentation/rest/get-paging-token/
+     *
+     */
+    public function getPagingToken($sinceDatetime, $args = array(), $returnRaw = false)
+    {
+        $args['sinceDatetime'] = $sinceDatetime;
+
+        return $this->getResult('getPagingToken', $args, false, $returnRaw);
+    }
+
+    /**
+     * Get lead changes
+     *
+     * @param string       $nextPageToken Next page token
+     * @param string|array $fields
+     * @param array        $args
+     * @param bool         $returnRaw
+     *
+     * @return GetLeadChanges
+     * @link http://developers.marketo.com/documentation/rest/get-lead-changes/
+     * @see  getPagingToken
+     *
+     */
+    public function getLeadChanges($nextPageToken, $fields, $args = array(), $returnRaw = false)
+    {
+        $args['nextPageToken'] = $nextPageToken;
+        $args['fields']        = (array) $fields;
+
+        if (count($fields)) {
+            $args['fields'] = implode(',', $fields);
         }
 
-        /**
-         * Update an editable section in an email
-         *
-         * @param int       $emailId
-         * @param string    $htmlId
-         * @param array     $args
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/update-email-content-by-id/
-         *
-         * @return Response
-         */
-        public function updateEmailContent($emailId, $args = array(), $returnRaw = false)
-        {
-            $args['id'] = $emailId;
+        return $this->getResult('getLeadChanges', $args, true, $returnRaw);
+    }
 
-            return $this->getResult('updateEmailContent', $args, false, $returnRaw);
+    /**
+     * Update an editable section in an email
+     *
+     * @param int       $emailId
+     * @param string    $htmlId
+     * @param array     $args
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/update-email-content-by-id/
+     *
+     * @return Response
+     */
+    public function updateEmailContent($emailId, $args = array(), $returnRaw = false)
+    {
+        $args['id'] = $emailId;
+
+        return $this->getResult('updateEmailContent', $args, false, $returnRaw);
+    }
+
+    /**
+     * Update an editable section in an email
+     *
+     * @param int       $emailId
+     * @param string    $htmlId
+     * @param array     $args
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/update-email-content-in-editable-section/
+     *
+     * @return UpdateEmailContentInEditableSectionResponse
+     */
+    public function updateEmailContentInEditableSection($emailId, $htmlId, $args = array(), $returnRaw = false)
+    {
+        $args['id']     = $emailId;
+        $args['htmlId'] = $htmlId;
+
+        return $this->getResult('updateEmailContentInEditableSection', $args, false, $returnRaw);
+    }
+
+    /**
+     * Approve an email
+     *
+     * @param int       $emailId
+     * @param string    $htmlId
+     * @param array     $args
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/approve-email-by-id/
+     *
+     * @return approveEmail
+     */
+    public function approveEmail($emailId, $args = array(), $returnRaw = false)
+    {
+        $args['id'] = $emailId;
+
+        return $this->getResult('approveEmailbyId', $args, false, $returnRaw);
+    }
+
+    /**
+     * Get Activity Types
+     *
+     * @link http://developers.marketo.com/documentation/rest/get-activity-types/
+     *
+     * @return GetActivityTypesResponse
+     */
+    public function getActivityTypes($args = array())
+    {
+        return $this->getResult('getActivityTypes', $args);
+    }
+
+    /**
+     * Get Lead Fields
+     *
+     * @link http://developers.marketo.com/documentation/rest/describe/
+     *
+     * @return DescribeLeadResponse
+     */
+    public function describeLead($args = array())
+    {
+        return $this->getResult('describeLead', $args);
+    }
+
+    /**
+     * Get Lead Activity.
+     *
+     * @link http://developers.marketo.com/documentation/rest/get-lead-activities/
+     *
+     * @return GetLeadActivitiesResponse
+     */
+    public function getLeadActivities($activityTypesIds, $nextPageToken, $args = array())
+    {
+        $activityTypeIds = array();
+        foreach ($activityTypesIds as $id) {
+            $activityTypeIdsarray[] = "activityTypeIdsarray[]={$id}";
         }
 
-        /**
-         * Update an editable section in an email
-         *
-         * @param int       $emailId
-         * @param string    $htmlId
-         * @param array     $args
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/update-email-content-in-editable-section/
-         *
-         * @return UpdateEmailContentInEditableSectionResponse
-         */
-        public function updateEmailContentInEditableSection($emailId, $htmlId, $args = array(), $returnRaw = false)
-        {
-            $args['id']     = $emailId;
-            $args['htmlId'] = $htmlId;
+        $args['activityTypeIds'] = implode(',', $activityTypesIds);
+        $args['nextPageToken']   = $nextPageToken;
 
-            return $this->getResult('updateEmailContentInEditableSection', $args, false, $returnRaw);
+        return $this->getResult('getLeadActivities', $args);
+    }
+
+    /**
+     * Get Snippets
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-snippets/
+     *
+     * @return GetSnippetsResponse
+     */
+    public function getSnippets($args = array())
+    {
+        return $this->getResult('getSnippets', $args);
+    }
+
+    /**
+     * Get Snippet By Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-snippet-by-id/
+     *
+     * @return GetSnippetByIdResponse
+     */
+    public function getSnippetById($id, $args = array())
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getSnippetById', $args);
+    }
+
+    /**
+     * Get Snippet Content By Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-snippet-content-by-id/
+     *
+     * @return GetSnippetContentByIdResponse
+     */
+    public function getSnippetContentById($id, $args = array())
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getSnippetContentById', $args);
+    }
+
+    /**
+     * Get Snippet Content By Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-email-content-by-id/
+     *
+     * @return GetEmailContentByIdResponse
+     */
+    public function getEmailContentById($id, $args = array())
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getEmailContentById', $args);
+    }
+
+    /**
+     * Update Email Dynamic Content By Id
+     *
+     * @param int       $id
+     * @param string    $dynamicContentId
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/update-email-dynamic-content-by-id/
+     *
+     * @return UpdateEmailDynamicContentByIdResponse
+     */
+    public function updateEmailDynamicContentById($id, $dynamicContentId, $args = array())
+    {
+        $args['id']               = $id;
+        $args['dynamicContentId'] = $dynamicContentId;
+
+        return $this->getResult('updateEmailDynamicContentById', $args);
+    }
+
+    /**
+     * Get Snippet Dynamic Content By Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-snippet-dynamic-content-by-id/
+     *
+     * @return GetSnippetDynamicContentByIdResponse
+     */
+    public function getSnippetDynamicContentById($id, $args = array())
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getSnippetDynamicContentById', $args);
+    }
+
+    /**
+     * Get Segmentations
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-segmentation-by-id/
+     *
+     * @return GetSegmentationsResponse
+     */
+    public function getSegmentations($args = array())
+    {
+        return $this->getResult('getSegmentations', $args);
+    }
+
+    /**
+     * Get Static Lists
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/asset-endpoint-reference/#!/Static_Lists/getStaticListsUsingGET
+     *
+     * @return GetStaticListsResponse
+     */
+    public function getStaticLists($args = array())
+    {
+        return $this->getResult('getStaticLists', $args);
+    }
+
+    /**
+     * Get Form Fields
+     *
+     * @link https://developers.marketo.com/rest-api/assets/forms/#field_list
+     *
+     * @return GetFormFieldsResponse
+     */
+    public function getFormFields($id)
+    {
+        $args = ['id' => $id];
+        return $this->getResult('getFormFields', $args);
+    }
+
+    /**
+     * Create Token by Folder Id
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/create-token-by-folder-id/
+     *
+     * @return CreateTokenByFolderIdResponse
+     */
+    public function createTokenByFolderId($id, $args = array())
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('createTokenByFolderId', $args);
+    }
+
+    /**
+     * Get Program by Name
+     *
+     * @link http://developers.marketo.com/documentation/programs/get-program-by-name/
+     *
+     * @return GetProgramByNameResponse
+     */
+    public function getProgramByName($name, $args = array())
+    {
+        $args['name'] = $name;
+
+        return $this->getResult('getProgramByName', $args);
+    }
+
+    /**
+     * Get Folder Contents
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/get-folder-contents/
+     *
+     * @return GetProgramByNameResponse
+     */
+    public function getFolderContents($id, $args = array())
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('getFolderContents', $args);
+    }
+
+    /**
+     * Get Program by Name
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/update-snippet-content-by-id/
+     *
+     * @return GetProgramByNameResponse
+     */
+    public function updateSnippetContentById($id, $args = array())
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('updateSnippetContentById', $args);
+    }
+
+    /**
+     * Get Program by Name
+     *
+     * @link http://developers.marketo.com/documentation/asset-api/approve-snippet-by-id/
+     *
+     * @return GetProgramByNameResponse
+     */
+    public function approveSnippetById($id, $args = array())
+    {
+        $args['id'] = $id;
+
+        return $this->getResult('approveSnippetById', $args);
+    }
+    /*     * *************** Custom Objects ************************ */
+
+    /**
+     * Describe Custom Object
+     *
+     * @link http://developers.marketo.com/documentation/custom-api/describe-custom-object/
+     *
+     * @return DescribeCustomObjectResponse
+     */
+    public function describeCustomObject($name)
+    {
+        return $this->getResult('describeCustomObject', array('name' => $name));
+    }
+
+    /**
+     * Get Custom Objects
+     *
+     * @link http://developers.marketo.com/documentation/custom-api/get-custom-objects/
+     *
+     * @return GetCustomObjectsResponse
+     */
+    public function getCustomObjects($name, $filterType, $filterValues, $args = array())
+    {
+        $args['name']         = $name;
+        $args['filterType']   = $filterType;
+        $args['filterValues'] = $filterValues;
+
+        return $this->getResult('getCustomObjects', $args);
+    }
+
+    /**
+     * Get Custom Objects
+     *
+     * @link http://developers.marketo.com/documentation/custom-api/get-custom-objects/
+     *
+     * @return GetCustomObjectsResponse
+     */
+    public function createOrUpdateCustomObjects($name, $object, $args = [])
+    {
+        $args['name']   = $name;
+        $args['action'] = 'createOnly';
+        $args['input']  = [$object];
+
+        return $this->getResult('createOrUpdateCustomObjects', $args);
+    }
+
+    /**
+     * Describe Custom Activity Type
+     *
+     * @link http://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Activities/describeCustomActivityTypeUsingGET
+     *
+     * @return SetCustomActivityResponse
+     */
+    public function describeCustomActivity($activities, $args = [])
+    {
+        $args['customActivityRequest'] = json_encode(['input' => $activities]);
+
+        return $this->getResult('describeCustomActivity', $args);
+    }
+
+    /**
+     * Add Custom Activity
+     *
+     * @link http://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Activities/addCustomActivityUsingPOST
+     *
+     * @return SetCustomActivityResponse
+     */
+    public function addCustomActivity($activities, $args = array())
+    {
+        $args['customActivityRequest'] = json_encode(array('input' => $activities));
+
+        return $this->getResult('addCustomActivity', $args);
+    }
+
+    /**
+     * Create Export Activity Job
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Bulk_Export_Activities/createExportActivitiesUsingPOST
+     *
+     * @return CreateExportActivityJobResponse
+     */
+    public function createExportActivityJob($filter, $format = 'CSV', $columnHeaderNames = [], $fields = [])
+    {
+        $args['filter'] = $filter;
+        $args['format'] = $format;
+        if (!empty($columnHeaderNames)) {
+            $args['columnHeaderNames'] = $columnHeaderNames;
+        }
+        if (!empty($fields)) {
+            $args['fields'] = $fields;
         }
 
-        /**
-         * Approve an email
-         *
-         * @param int       $emailId
-         * @param string    $htmlId
-         * @param array     $args
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/approve-email-by-id/
-         *
-         * @return approveEmail
-         */
-        public function approveEmail($emailId, $args = array(), $returnRaw = false)
-        {
-            $args['id'] = $emailId;
+        return $this->getResult('createExportActivityJob', $args);
+    }
 
-            return $this->getResult('approveEmailbyId', $args, false, $returnRaw);
-        }
+    /**
+     * Enqueue Export Activity Job
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Bulk_Export_Activities/enqueueExportActivitiesUsingPOST
+     *
+     * @return EnqueueExportActivityJobResponse
+     */
+    public function enqueueExportActivityJob($exportId)
+    {
+        $args['exportId'] = $exportId;
 
-        /**
-         * Get Activity Types
-         *
-         * @link http://developers.marketo.com/documentation/rest/get-activity-types/
-         *
-         * @return GetActivityTypesResponse
-         */
-        public function getActivityTypes($args = array())
-        {
-            return $this->getResult('getActivityTypes', $args);
-        }
+        return $this->getResult('enqueueExportActivityJob', $args);
+    }
 
-        /**
-         * Get Lead Fields
-         *
-         * @link http://developers.marketo.com/documentation/rest/describe/
-         *
-         * @return DescribeLeadResponse
-         */
-        public function describeLead($args = array())
-        {
-            return $this->getResult('describeLead', $args);
-        }
+    /**
+     * Get Export Activity Job Status
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Bulk_Export_Activities/enqueueExportActivitiesUsingPOST
+     *
+     * @return GetExportActivityJobStatusResponse
+     */
+    public function getExportActivityJobStatus($exportId)
+    {
+        $args['exportId'] = $exportId;
 
-        /**
-         * Get Lead Activity.
-         *
-         * @link http://developers.marketo.com/documentation/rest/get-lead-activities/
-         *
-         * @return GetLeadActivitiesResponse
-         */
-        public function getLeadActivities($activityTypesIds, $nextPageToken, $args = array())
-        {
-            $activityTypeIds = array();
-            foreach ($activityTypesIds as $id) {
-                $activityTypeIdsarray[] = "activityTypeIdsarray[]={$id}";
-            }
+        return $this->getResult('getExportActivityJobStatus', $args);
+    }
 
-            $args['activityTypeIds'] = implode(',', $activityTypesIds);
-            $args['nextPageToken']   = $nextPageToken;
+    /**
+     * Get Export Activity Job Status
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Bulk_Export_Activities/enqueueExportActivitiesUsingPOST
+     *
+     * @return GetExportActivityFileResponse
+     */
+    public function getExportActivityFile($exportId)
+    {
+        $args['exportId'] = $exportId;
 
-            return $this->getResult('getLeadActivities', $args);
-        }
+        return $this->getResult('getExportActivityFile', $args, false, true);
+    }
 
-        /**
-         * Get Snippets
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/get-snippets/
-         *
-         * @return GetSnippetsResponse
-         */
-        public function getSnippets($args = array())
-        {
-            return $this->getResult('getSnippets', $args);
-        }
+    /**
+     * Internal helper method to actually perform command.
+     *
+     * @param string $command
+     * @param array  $args
+     * @param bool   $fixArgs
+     *
+     * @return Response
+     */
+    protected function getResult($command, $args, $fixArgs = false, $returnRaw = false)
+    {
+        $cmd = $this->getCommand($command, $args);
 
-        /**
-         * Get Snippet By Id
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/get-snippet-by-id/
-         *
-         * @return GetSnippetByIdResponse
-         */
-        public function getSnippetById($id, $args = array())
-        {
-            $args['id'] = $id;
-
-            return $this->getResult('getSnippetById', $args);
-        }
-
-        /**
-         * Get Snippet Content By Id
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/get-snippet-content-by-id/
-         *
-         * @return GetSnippetContentByIdResponse
-         */
-        public function getSnippetContentById($id, $args = array())
-        {
-            $args['id'] = $id;
-
-            return $this->getResult('getSnippetContentById', $args);
-        }
-
-        /**
-         * Get Snippet Content By Id
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/get-email-content-by-id/
-         *
-         * @return GetEmailContentByIdResponse
-         */
-        public function getEmailContentById($id, $args = array())
-        {
-            $args['id'] = $id;
-
-            return $this->getResult('getEmailContentById', $args);
-        }
-
-        /**
-         * Update Email Dynamic Content By Id
-         *
-         * @param int       $id
-         * @param string    $dynamicContentId
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/update-email-dynamic-content-by-id/
-         *
-         * @return UpdateEmailDynamicContentByIdResponse
-         */
-        public function updateEmailDynamicContentById($id, $dynamicContentId, $args = array())
-        {
-            $args['id']               = $id;
-            $args['dynamicContentId'] = $dynamicContentId;
-
-            return $this->getResult('updateEmailDynamicContentById', $args);
-        }
-
-        /**
-         * Get Snippet Dynamic Content By Id
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/get-snippet-dynamic-content-by-id/
-         *
-         * @return GetSnippetDynamicContentByIdResponse
-         */
-        public function getSnippetDynamicContentById($id, $args = array())
-        {
-            $args['id'] = $id;
-
-            return $this->getResult('getSnippetDynamicContentById', $args);
-        }
-
-        /**
-         * Get Segmentations
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/get-segmentation-by-id/
-         *
-         * @return GetSegmentationsResponse
-         */
-        public function getSegmentations($args = array())
-        {
-            return $this->getResult('getSegmentations', $args);
-        }
-
-        /**
-         * Create Token by Folder Id
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/create-token-by-folder-id/
-         *
-         * @return CreateTokenByFolderIdResponse
-         */
-        public function createTokenByFolderId($id, $args = array())
-        {
-            $args['id'] = $id;
-
-            return $this->getResult('createTokenByFolderId', $args);
-        }
-
-        /**
-         * Get Program by Name
-         *
-         * @link http://developers.marketo.com/documentation/programs/get-program-by-name/
-         *
-         * @return GetProgramByNameResponse
-         */
-        public function getProgramByName($name, $args = array())
-        {
-            $args['name'] = $name;
-
-            return $this->getResult('getProgramByName', $args);
-        }
-
-        /**
-         * Get Folder Contents
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/get-folder-contents/
-         *
-         * @return GetProgramByNameResponse
-         */
-        public function getFolderContents($id, $args = array())
-        {
-            $args['id'] = $id;
-
-            return $this->getResult('getFolderContents', $args);
-        }
-
-        /**
-         * Get Program by Name
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/update-snippet-content-by-id/
-         *
-         * @return GetProgramByNameResponse
-         */
-        public function updateSnippetContentById($id, $args = array())
-        {
-            $args['id'] = $id;
-
-            return $this->getResult('updateSnippetContentById', $args);
-        }
-
-        /**
-         * Get Program by Name
-         *
-         * @link http://developers.marketo.com/documentation/asset-api/approve-snippet-by-id/
-         *
-         * @return GetProgramByNameResponse
-         */
-        public function approveSnippetById($id, $args = array())
-        {
-            $args['id'] = $id;
-
-            return $this->getResult('approveSnippetById', $args);
-        }
-        /*         * *************** Custom Objects ************************ */
-
-        /**
-         * Describe Custom Object
-         *
-         * @link http://developers.marketo.com/documentation/custom-api/describe-custom-object/
-         *
-         * @return DescribeCustomObjectResponse
-         */
-        public function describeCustomObject($name)
-        {
-            return $this->getResult('describeCustomObject', array('name' => $name));
-        }
-
-        /**
-         * Get Custom Objects
-         *
-         * @link http://developers.marketo.com/documentation/custom-api/get-custom-objects/
-         *
-         * @return GetCustomObjectsResponse
-         */
-        public function getCustomObjects($name, $filterType, $filterValues, $args = array())
-        {
-            $args['name']         = $name;
-            $args['filterType']   = $filterType;
-            $args['filterValues'] = $filterValues;
-
-            return $this->getResult('getCustomObjects', $args);
-        }
-
-        /**
-         * Get Custom Objects
-         *
-         * @link http://developers.marketo.com/documentation/custom-api/get-custom-objects/
-         *
-         * @return GetCustomObjectsResponse
-         */
-        public function createOrUpdateCustomObjects($name, $object, $args = [])
-        {
-            $args['name']         = $name;
-            $args['action'] = 'createOnly';
-            $args['input'] = [$object];
-
-            return $this->getResult('createOrUpdateCustomObjects', $args);
-        }
-
-        /**
-         * Describe Custom Activity Type
-         *
-         * @link http://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Activities/describeCustomActivityTypeUsingGET
-         *
-         * @return SetCustomActivityResponse
-         */
-        public function describeCustomActivity($activities, $args = [])
-        {
-            $args['customActivityRequest']         = json_encode(['input' => $activities]);
-
-            return $this->getResult('describeCustomActivity', $args);
-        }
-        
-        /**
-         * Add Custom Activity
-         *
-         * @link http://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Activities/addCustomActivityUsingPOST
-         *
-         * @return SetCustomActivityResponse
-         */
-        public function addCustomActivity($activities, $args = array())
-        {
-            $args['customActivityRequest']         = json_encode(array('input' => $activities));
-
-            return $this->getResult('addCustomActivity', $args);
-        }
-        
-        /**
-         * Internal helper method to actually perform command.
-         *
-         * @param string $command
-         * @param array  $args
-         * @param bool   $fixArgs
-         *
-         * @return Response
-         */
-        protected function getResult($command, $args, $fixArgs = false, $returnRaw = false)
-        {
-            $cmd = $this->getCommand($command, $args);
-
-//                $cmd->prepare();
-
-
-//            \yii\helpers\VarDumper::dump($cmd->getRequest(), 7, true);exit;
-
-            // Marketo expects parameter arrays in the format id=1&id=2, Guzzle formats them as id[0]=1&id[1]=2.
-            // Use a quick regex to fix it where necessary.
-            if ($fixArgs) {
-                $cmd->prepare();
-
-                $url = preg_replace('/id%5B([0-9]+)%5D/', 'id', $cmd->getRequest()->getUrl());
-                $cmd->getRequest()->setUrl($url);
-            }
-
+        // Marketo expects parameter arrays in the format id=1&id=2, Guzzle formats them as id[0]=1&id[1]=2.
+        // Use a quick regex to fix it where necessary.
+        if ($fixArgs) {
             $cmd->prepare();
 
-            if ($returnRaw) {
-                return $cmd->getResponse()->getBody(true);
-            }
-
-            return $cmd->getResult();
+            $url = preg_replace('/id%5B([0-9]+)%5D/', 'id', $cmd->getRequest()->getUrl());
+            $cmd->getRequest()->setUrl($url);
         }
+
+        $cmd->prepare();
+
+        if ($returnRaw) {
+            $cmd['command.response_processing'] = 'raw';
+            return $cmd->getResponse()->getBody(true);
+        }
+
+        return $cmd->getResult();
     }
+}

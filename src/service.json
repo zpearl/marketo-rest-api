@@ -198,6 +198,16 @@
             },
             "responseClass": "CSD\\Marketo\\Response\\AssociateLeadResponse"
         },
+        "mergeLeads": {
+            "httpMethod": "POST",
+            "uri": "leads/{leadId}/merge.json",
+            "parameters": {
+                "leadId": {"location": "uri"},
+                "leadIds": {"location": "query"},
+                "mergeInCRM": {"location": "query"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\MergeLeadsResponse"
+        },
         "removeLeadsFromList": {
             "httpMethod": "DELETE",
             "uri": "lists/{listId}/leads.json",
@@ -384,6 +394,22 @@
             "uri": "/rest/asset/v1/segmentation.json",
             "responseClass": "CSD\\Marketo\\Response\\GetSegmentationsResponse"
         },
+        "getStaticLists": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/staticLists.json",
+            "parameters": {
+                "maxReturn": {"location": "query"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetStaticListsResponse"
+        },
+        "getFormFields": {
+            "httpMethod": "GET",
+            "uri": "/rest/asset/v1/form/{id}/fields.json",
+            "parameters": {
+                "id": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetFormFieldsResponse"
+        },
         "getCustomObjects": {
             "httpMethod": "GET",
             "uri": "/rest/v1/customobjects/{name}.json",
@@ -427,6 +453,39 @@
                 "customActivityRequest": {"location": "body"}
             },
             "responseClass": "CSD\\Marketo\\Response\\AddCustomActivityResponse"
+        },
+        "createExportActivityJob": {
+            "httpMethod": "POST",
+            "uri": "/bulk/v1/activities/export/create.json",
+            "parameters": {
+                "filter": {"location": "json"},
+                "format": {"location": "json"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\CreateExportActivityJobResponse"
+        },
+        "enqueueExportActivityJob": {
+            "httpMethod": "POST",
+            "uri": "/bulk/v1/activities/export/{exportId}/enqueue.json",
+            "parameters": {
+                "exportId": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\EnqueueExportActivityJobResponse"
+        },
+        "getExportActivityJobStatus": {
+            "httpMethod": "GET",
+            "uri": "/bulk/v1/activities/export/{exportId}/status.json",
+            "parameters": {
+                "exportId": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetExportActivityJobStatusResponse"
+        },
+        "getExportActivityFile": {
+            "httpMethod": "GET",
+            "uri": "/bulk/v1/activities/export/{exportId}/file.json",
+            "parameters": {
+                "exportId": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetExportActivityFileResponse"
         }
     }
 }
