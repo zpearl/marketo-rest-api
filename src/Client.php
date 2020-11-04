@@ -1078,6 +1078,56 @@ class Client extends GuzzleClient
     }
 
     /**
+     * Create Import Leads Job
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Bulk_Import_Leads/importLeadUsingPOST
+     *
+     * @return CreateImportLeadsJobResponse
+     */
+    public function createImportLeadsJob($filePath, $format = 'csv', $listId = null, $lookupField = null, $partitionName = null)
+    {
+        if (!is_readable($filePath)) {
+            throw new \Exception('Cannot read file: '.$filePath);
+        }
+
+        $args['file'] = $filePath;
+        $args['format'] = $format;
+        $args['listId'] = $listId;
+        $args['lookupField'] = $lookupField;
+        $args['partitionName'] = $partitionName;
+
+        return $this->getResult('createImportLeadsJob', $args);
+    }
+
+    /**
+     * Get Import Leads Job Status
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Bulk_Import_Leads/getImportLeadStatusUsingGET
+     *
+     * @return GetImportLeadsJobStatusResponse
+     */
+    public function getImportLeadsJobStatus($batchId)
+    {
+        $args['batchId'] = $batchId;
+
+        return $this->getResult('getImportLeadsJobStatus', $args);
+    }
+
+    /**
+     * Get Import Leads Job Failures
+     *
+     * @link https://developers.marketo.com/rest-api/endpoint-reference/lead-database-endpoint-reference/#!/Bulk_Import_Leads/getImportLeadFailuresUsingGET
+     *
+     * @return GetImportLeadsJobFailuresResponse
+     */
+    public function getImportLeadsJobFailures($batchId)
+    {
+        $args['batchId'] = $batchId;
+
+        return $this->getResult('getImportLeadsJobFailures', $args);
+    }
+    
+    /**
      * Internal helper method to actually perform command.
      *
      * @param string $command

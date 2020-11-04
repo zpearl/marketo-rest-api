@@ -486,6 +486,34 @@
                 "exportId": {"location": "uri"}
             },
             "responseClass": "CSD\\Marketo\\Response\\GetExportActivityFileResponse"
+        },
+        "createImportLeadsJob": {
+            "httpMethod": "POST",
+            "uri": "/bulk/v1/leads.json",
+            "parameters": {
+                "file": {"location": "postFile"},
+                "format": {"location": "query"},
+                "lookupField": {"location": "query"},
+                "partitionName": {"location": "query"},
+                "listId": {"location": "query"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\CreateImportLeadsJobResponse"
+        },
+        "getImportLeadsJobStatus": {
+            "httpMethod": "GET",
+            "uri": "/bulk/v1/leads/batch/{batchId}.json",
+            "parameters": {
+                "batchId": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetImportLeadsJobStatusResponse"
+        },
+        "getImportLeadsJobFailures": {
+            "httpMethod": "GET",
+            "uri": "/bulk/v1/leads/batch/{batchId}/failures.json",
+            "parameters": {
+                "batchId": {"location": "uri"}
+            },
+            "responseClass": "CSD\\Marketo\\Response\\GetImportLeadsJobFailuresResponse"
         }
     }
 }
